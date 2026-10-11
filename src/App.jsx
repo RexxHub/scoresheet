@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { loadState, saveState, defaults, isSenior, sectionOf, SUBJECTS, SENIOR_SUBJECTS } from './lib.js';
+import { loadState, saveState, defaults, isSenior, sectionOf, hasMock, SUBJECTS, SENIOR_SUBJECTS } from './lib.js';
 import Icon from './Icon.jsx';
 import { supabase, configured } from './supabase.js';
 import * as cloud from './cloud.js';
@@ -268,7 +268,7 @@ export default function App() {
     );
   }
 
-  const visible = isAdmin ? TABS : TABS.filter((t) => t[0] === 'sco');
+  const visible = isAdmin ? TABS.filter((t) => t[0] !== 'cer' || (S && hasMock(S))) : TABS.filter((t) => t[0] === 'sco');
   const cur = visible.some((t) => t[0] === tab) ? tab : visible[0][0];
   const who = session && (session.user.user_metadata.name || session.user.email);
   const cx = configured && isAdmin && cls ? {

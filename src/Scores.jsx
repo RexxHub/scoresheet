@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { calc, maxTotal, getScore, subjectStats, mockOf, mockGrade, gradeClass } from './lib.js';
+import { calc, maxTotal, getScore, subjectStats, mockOf, mockGrade, gradeClass, hasMock } from './lib.js';
 
 export default function Scores({ S, up }) {
   const [cur, setCur] = useState(0);
   const [bad, setBad] = useState('');
-  const [mode, setMode] = useState('ca');
+  const [modeSel, setMode] = useState('ca');
+  const mode = hasMock(S) ? modeSel : 'ca';
   if (!S.subjects.length) return <section className="card"><p className="hint">No subjects are assigned to you in this class yet.</p></section>;
   const idx = cur < S.subjects.length ? cur : 0;
   const sub = S.subjects[idx];
@@ -48,10 +49,12 @@ export default function Scores({ S, up }) {
             {S.subjects.map((s, i) => <option key={s} value={i}>{s}</option>)}
           </select>
         </label>
-        <div className="seg" role="group" aria-label="Kind of marks">
-          <button type="button" aria-pressed={mode === 'ca'} onClick={() => setMode('ca')}>CA marks</button>
-          <button type="button" aria-pressed={mode === 'mock'} onClick={() => setMode('mock')}>Mock exam</button>
-        </div>
+        {hasMock(S) && (
+          <div className="seg" role="group" aria-label="Kind of marks">
+            <button type="button" aria-pressed={mode === 'ca'} onClick={() => setMode('ca')}>CA marks</button>
+            <button type="button" aria-pressed={mode === 'mock'} onClick={() => setMode('mock')}>Mock exam</button>
+          </div>
+        )}
         <p className="hint">{mode === 'ca' ? "Type each student's marks. Total, percentage and grade update as you type. Press Enter to move down a column." : "Type each student's mock exam score out of 100. The grade shows as you type. Press Enter to move down."}</p>
       </section>
       {mode === 'ca' && (<>

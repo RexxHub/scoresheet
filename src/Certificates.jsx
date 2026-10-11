@@ -1,4 +1,4 @@
-import { mockOf, mockGrade, isSenior } from './lib.js';
+import { mockOf, mockGrade, isSenior, hasMock } from './lib.js';
 import logo from './assets/logo.png';
 import Icon from './Icon.jsx';
 
@@ -25,6 +25,7 @@ const readSig = (file, done) => {
 };
 
 export default function Certificates({ S, up }) {
+  if (!hasMock(S)) return <section className="card"><p className="hint">Mock exams are only for Year 9 and Year 12.</p></section>;
   const sch = S.school, c = sch.cert || {}, sen = isSenior(S);
   const set = (k, v) => up((d) => { d.school.cert = { ...(d.school.cert || {}), [k]: v }; });
   const exam = c.exam || (sen ? 'first Mock Senior School Certificate Examination' : 'first Basic Education Certificate Examination');

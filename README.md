@@ -47,3 +47,5 @@ Without the two variables, the app runs in offline mode and saves to the browser
 - School name, address, session, term and assessment round are shared by all classes.
 - Year 7 to 9 is the junior section (A to F). Year 10 to 12 is the senior section (A1 to F9).
 - Run `supabase.sql` once after updating. It also moves an older single-class setup into a first class.
+
+- Mock exams are only for Year 9 (junior) and Year 12 (senior). The Mock exam switch and the Mock certificates tab appear only for those classes.

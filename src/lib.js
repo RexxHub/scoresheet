@@ -28,6 +28,14 @@ export const isSenior = (S) => {
   if (m) return +m[0] >= 10;
   return /senior/i.test((S.school && S.school.section) || '');
 };
+// Mock exams are only for the exit classes: Year 9 (junior) and Year 12 (senior)
+export const hasMock = (S) => {
+  const cls = String((S.school && S.school.cls) || '');
+  if (/JSS\s*3/i.test(cls)) return true;
+  if (/(^|\s)SS\s*3/i.test(cls)) return true;
+  const m = cls.match(/\d+/);
+  return !!m && (+m[0] === 9 || +m[0] === 12);
+};
 export const sectionOf = (S) => (isSenior(S) ? 'SENIOR SECTION' : 'JUNIOR SECTION');
 const JUNIOR_SCALE = [[80, 'A'], [70, 'B'], [60, 'C'], [50, 'P'], [0, 'F']];
 const SENIOR_SCALE = [[80, 'A1'], [70, 'B2'], [65, 'B3'], [60, 'C4'], [55, 'C5'], [50, 'C6'], [45, 'D7'], [40, 'E8'], [0, 'F9']];
