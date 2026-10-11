@@ -30,3 +30,10 @@ Teachers key in continuous assessment scores per subject; the app totals, grades
 6. Optional: in Supabase Authentication > Providers > Email, turn off "Confirm email" if you want teachers to log in right after signing up.
 
 Without the two variables, the app runs in offline mode and saves to the browser only.
+
+
+## Roles
+- The first person to create an account is the **admin**: they use Setup (school, subjects, students) and Report slips.
+- Everyone who signs up after that is a **teacher** and only sees the Enter scores tab.
+- To make someone else an admin, open Supabase > Table Editor > profiles and change their `role` to `admin`.
+- After your teachers have accounts, turn off public sign-ups: Supabase > Authentication > Sign In / Providers > turn off "Allow new users to sign up", and add later teachers under Authentication > Users > Add user.
