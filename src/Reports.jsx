@@ -1,4 +1,4 @@
-import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, gradeClass } from './lib.js';
+import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass } from './lib.js';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 
@@ -35,7 +35,7 @@ export default function Reports({ S, up }) {
             </div>
             <div className="band">
               <b>{sch.ca} CONTINUOUS ASSESSMENT REPORT</b>
-              <span>{sch.session} Academic Session ({sch.section})</span>
+              <span>{sch.session} Academic Session ({sectionOf(S)})</span>
             </div>
             <div className="info">
               <div className="who2"><small>Student</small><b>{st.n}</b></div>

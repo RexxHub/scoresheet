@@ -1,6 +1,6 @@
-import { parseStudents, maxTotal, SUBJECTS, SENIOR_SUBJECTS } from './lib.js';
+import { parseStudents, maxTotal, SUBJECTS, SENIOR_SUBJECTS, isSenior } from './lib.js';
 
-const FIELDS = [['name', 'School name'], ['addr', 'Address'], ['ca', 'Assessment (e.g. FIRST)'], ['session', 'Session'], ['section', 'Section'], ['term', 'Term'], ['cls', 'Class'], ['teacher', 'Class teacher name'], ['desig', 'Designation']];
+const FIELDS = [['name', 'School name'], ['addr', 'Address'], ['ca', 'Assessment (e.g. FIRST)'], ['session', 'Session'], ['term', 'Term'], ['cls', 'Class'], ['teacher', 'Class teacher name'], ['desig', 'Designation']];
 
 export default function Setup({ S, up }) {
   return (
@@ -8,12 +8,17 @@ export default function Setup({ S, up }) {
       <section className="card">
         <h2>School and class details</h2>
         <p className="hint">These appear on every report slip. Changes save automatically.</p>
+        <p className="hint">Year 7 to 9 is the <b>junior</b> section (grades A to F). Year 10 to 12 is the <b>senior</b> section (grades A1 to F9). This is picked from the class, and the same grades are used for CA and mock.</p>
         <div className="fields">
-          {FIELDS.map(([k, l]) => (k === 'section' ? (
+          {FIELDS.map(([k, l]) => (k === 'cls' ? (
             <label key={k}>{l}
-              <select value={/senior/i.test(S.school.section) ? 'SENIOR SECTION' : 'JUNIOR SECTION'} onChange={(e) => up((d) => { d.school.section = e.target.value; })}>
-                <option>JUNIOR SECTION</option>
-                <option>SENIOR SECTION</option>
+              <select value={S.school.cls} onChange={(e) => {
+                const v = e.target.value;
+                const was = isSenior(S), now = isSenior({ school: { cls: v, section: S.school.section } });
+                up((d) => { d.school.cls = v; d.school.section = now ? 'SENIOR SECTION' : 'JUNIOR SECTION'; });
+                if (was !== now && window.confirm(`Switch the subject list to the ${now ? 'senior' : 'junior'} subjects?`)) up((d) => { d.subjects = now ? [...SENIOR_SUBJECTS] : [...SUBJECTS]; });
+              }}>
+                {[...new Set([...['YEAR 7', 'YEAR 8', 'YEAR 9', 'YEAR 10', 'YEAR 11', 'YEAR 12'], S.school.cls])].map((c) => <option key={c}>{c}</option>)}
               </select>
             </label>
           ) : (

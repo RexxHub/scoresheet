@@ -20,7 +20,15 @@ export const saveState = (s) => { try { localStorage.setItem('caportal', JSON.st
 
 export const maxTotal = (S) => S.comps.reduce((a, c) => a + (+c.m || 0), 0);
 export const SENIOR_SUBJECTS = ['MATHEMATICS','ENGLISH LANGUAGE','IGBO LANGUAGE','CITIZENSHIP & HERITAGE STUDIES','GOVERNMENT','FURTHER MATHEMATICS','LITERATURE','BIOLOGY','CHEMISTRY','PHYSICS','FASHION DESIGN & DRESS MAKING','DIGITAL TECHNOLOGY','ECONOMICS','FOOD & NUTRITION','ACCOUNTING','COMMERCE','GEOGRAPHY','TECHNICAL DRAWING','FRENCH','AGRICULTURAL SCIENCE','CHRISTIAN RELIGIOUS STUDIES','CIVIC EDUCATION'];
-export const isSenior = (S) => /senior/i.test((S.school && S.school.section) || '');
+// Year 7-9 = junior section, Year 10-12 = senior section (SS 1-3 also counts as senior)
+export const isSenior = (S) => {
+  const cls = String((S.school && S.school.cls) || '');
+  if (/(^|\s)SS\s*\d/i.test(cls)) return true;
+  const m = cls.match(/\d+/);
+  if (m) return +m[0] >= 10;
+  return /senior/i.test((S.school && S.school.section) || '');
+};
+export const sectionOf = (S) => (isSenior(S) ? 'SENIOR SECTION' : 'JUNIOR SECTION');
 const JUNIOR_SCALE = [[80, 'A'], [70, 'B'], [60, 'C'], [50, 'P'], [0, 'F']];
 const SENIOR_SCALE = [[80, 'A1'], [70, 'B2'], [65, 'B3'], [60, 'C4'], [55, 'C5'], [50, 'C6'], [45, 'D7'], [40, 'E8'], [0, 'F9']];
 export const gradeOf = (p, sen = false) => (sen ? SENIOR_SCALE : JUNIOR_SCALE).find(([m]) => p >= m)[1];
