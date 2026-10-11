@@ -27,7 +27,7 @@ export default function Reports({ S, up }) {
         return (
           <section className="slip" key={st.n}>
             <div className="sh">
-              <Logo size="slip" />
+              <Logo size="rs" />
               <div>
                 <div className="sn1">{sch.name}</div>
                 <div className="sa">{sch.addr}</div>

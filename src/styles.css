@@ -143,7 +143,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .logo{display:block;height:auto;object-fit:contain}
 .logo.sm{width:34px}
 .logo.lg{width:76px}
-.logo.slip{flex:none;width:58px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.logo.rs{flex:none;width:52px}
 .logotile{flex:none;display:grid;place-items:center;width:52px;height:56px;background:#fff;border-radius:12px;box-shadow:0 0 0 2px var(--gold)}
 .logotile.big{width:112px;height:120px;border-radius:18px;margin-bottom:24px}
 .foot{margin:36px 0 0;text-align:center;font-size:12px;color:var(--mut)}
@@ -151,3 +151,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 @media(max-width:860px){.logotile{width:42px;height:46px}.logo.sm{width:28px}.logotile.big{width:80px;height:86px;margin-bottom:14px}.logo.lg{width:54px}}
 .authmain{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .authmain .foot{margin-top:28px}
+@page{size:A4 portrait;margin:8mm}
+@media print{
+ .slip{font-size:12px;padding:3mm 2mm;break-inside:avoid;page-break-inside:avoid}
+ .slip:last-child{break-after:auto;page-break-after:auto}
+ .band{margin:8px 0}.info{margin-bottom:8px}.sum{margin:8px 0}.scale{margin:6px 0 8px}
+ .rp th{padding:4px}.rp td{padding:3px 5px}
+}
