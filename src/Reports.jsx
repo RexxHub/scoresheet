@@ -1,4 +1,4 @@
-import { calc, maxTotal, getScore, scoredCount, overall } from './lib.js';
+import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, gradeClass } from './lib.js';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 
@@ -60,7 +60,7 @@ export default function Reports({ S, up }) {
                       <td>{i + 1}</td><td className="s">{s}</td>
                       {S.comps.map((k) => <td key={k.k}>{v[k.k] === undefined || v[k.k] === '' ? '' : v[k.k]}</td>)}
                       <td><b>{c.f ? c.t : ''}</b></td><td>{c.f ? c.p : ''}</td>
-                      <td>{c.f && <span className={`chip ${c.g}`}>{c.g}</span>}</td>
+                      <td>{c.f && <span className={`chip ${c.gc}`}>{c.g}</span>}</td>
                     </tr>
                   );
                 })}
@@ -70,15 +70,11 @@ export default function Reports({ S, up }) {
               <div className="sum">
                 <div><small>Total obtained</small><b>{o.sum} / {o.max}</b></div>
                 <div><small>Overall percentage</small><b>{o.pct}%</b></div>
-                <div><small>Overall grade</small><b><span className={`chip ${o.g}`}>{o.g}</span></b></div>
+                <div><small>Overall grade</small><b><span className={`chip ${o.gc}`}>{o.g}</span></b></div>
               </div>
             )}
             <p className="scale">
-              <span><i className="chip A">A</i> 80-100 Excellent</span>
-              <span><i className="chip B">B</i> 70-79 Very good</span>
-              <span><i className="chip C">C</i> 60-69 Credit</span>
-              <span><i className="chip P">P</i> 50-59 Pass</span>
-              <span><i className="chip F">F</i> 0-49 Fail</span>
+              {LEGEND(isSenior(S)).map(([g, r, t]) => <span key={g}><i className={`chip ${gradeClass(g)}`}>{g}</i> {r} {t}</span>)}
             </p>
             <div className="sig">
               <label className="w">Remark

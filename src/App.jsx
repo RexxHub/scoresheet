@@ -9,12 +9,13 @@ import ConnectSupabase from './ConnectSupabase.jsx';
 import Setup from './Setup.jsx';
 import Scores from './Scores.jsx';
 import Reports from './Reports.jsx';
+import Certificates from './Certificates.jsx';
 import Logo from './Logo.jsx';
 import Footer from './Footer.jsx';
 
-const TABS = [['set', 'Setup', 'set'], ['sco', 'Enter scores', 'edit'], ['rep', 'Report slips', 'file']];
+const TABS = [['set', 'Setup', 'set'], ['sco', 'Enter scores', 'edit'], ['rep', 'Report slips', 'file'], ['cer', 'Mock certificates', 'file']];
 const missingTable = (e) => e && (e.code === 'PGRST205' || e.code === '42P01' || /(schema cache|does not exist)/i.test(e.message || ''));
-const SUB = { set: 'School, class, subjects and students', sco: 'Record marks one subject at a time', rep: 'Review, add remarks and print' };
+const SUB = { set: 'School, class, subjects and students', sco: 'Record marks one subject at a time', rep: 'Review, add remarks and print', cer: 'Print the mock statement of result' };
 
 export default function App() {
   const [session, setSession] = useState(configured ? undefined : null);
@@ -112,7 +113,7 @@ export default function App() {
     savedMap.current = flatten(r.scores);
     setS((p) => ({ ...p, scores: r.scores }));
   };
-  const openTab = (k) => { setTab(k); if (k === 'rep' || k === 'sco') reloadScores(); };
+  const openTab = (k) => { setTab(k); if (k === 'rep' || k === 'sco' || k === 'cer') reloadScores(); };
 
   const up = (fn) => setS((prev) => { const n = structuredClone(prev); fn(n); return n; });
 
@@ -176,6 +177,7 @@ export default function App() {
         {cur === 'set' && <Setup S={S} up={up} />}
         {cur === 'sco' && <Scores S={S} up={up} />}
         {cur === 'rep' && <Reports S={S} up={up} />}
+        {cur === 'cer' && <Certificates S={S} up={up} />}
         <div className="noprint"><Footer /></div>
       </div>
     </div>

@@ -7,7 +7,7 @@ export const parseStudents = (t) => t.split('\n').map((l) => l.trim()).filter(Bo
 });
 
 export const defaults = () => ({
-  school: { name: 'THE WINS SECONDARY SCHOOL ENUGU', addr: 'No.8 Rangers Avenue, Independence Layout Enugu', ca: 'FIRST', session: '2025/2026', section: 'JUNIOR SECTION', term: '2ND', cls: 'YEAR 8', teacher: '', desig: '' },
+  school: { name: 'THE WINS SECONDARY SCHOOL', addr: 'No.8 Rangers Avenue, Independence Layout Enugu', ca: 'FIRST', session: '2025/2026', section: 'JUNIOR SECTION', term: '2ND', cls: 'YEAR 8', teacher: '', desig: '' },
   comps: [{ k: 'ha', n: 'H/A', m: 5 }, { k: 'cw', n: 'C/W', m: 2 }, { k: 'as', n: 'ASS', m: 2 }, { k: 'nt', n: 'NOTE', m: 1 }, { k: 'cat', n: 'CAT1', m: 10 }],
   subjects: SUBJECTS, students: parseStudents(NAMES), scores: {}, rem: {},
 });
@@ -19,7 +19,17 @@ export const loadState = () => {
 export const saveState = (s) => { try { localStorage.setItem('caportal', JSON.stringify(s)); } catch (e) { /* ignore */ } };
 
 export const maxTotal = (S) => S.comps.reduce((a, c) => a + (+c.m || 0), 0);
-export const gradeOf = (p) => (p >= 80 ? 'A' : p >= 70 ? 'B' : p >= 60 ? 'C' : p >= 50 ? 'P' : 'F');
+export const SENIOR_SUBJECTS = ['MATHEMATICS','ENGLISH LANGUAGE','IGBO LANGUAGE','CITIZENSHIP & HERITAGE STUDIES','GOVERNMENT','FURTHER MATHEMATICS','LITERATURE','BIOLOGY','CHEMISTRY','PHYSICS','FASHION DESIGN & DRESS MAKING','DIGITAL TECHNOLOGY','ECONOMICS','FOOD & NUTRITION','ACCOUNTING','COMMERCE','GEOGRAPHY','TECHNICAL DRAWING','FRENCH','AGRICULTURAL SCIENCE','CHRISTIAN RELIGIOUS STUDIES','CIVIC EDUCATION'];
+export const isSenior = (S) => /senior/i.test((S.school && S.school.section) || '');
+const JUNIOR_SCALE = [[80, 'A'], [70, 'B'], [60, 'C'], [50, 'P'], [0, 'F']];
+const SENIOR_SCALE = [[80, 'A1'], [70, 'B2'], [65, 'B3'], [60, 'C4'], [55, 'C5'], [50, 'C6'], [45, 'D7'], [40, 'E8'], [0, 'F9']];
+export const gradeOf = (p, sen = false) => (sen ? SENIOR_SCALE : JUNIOR_SCALE).find(([m]) => p >= m)[1];
+export const gradeClass = (g) => (/^[DE]/.test(g) ? 'P' : g ? g[0] : '');
+export const LEGEND = (sen) => (sen
+  ? [['A1', '80-100', 'Excellent'], ['B2', '70-79', 'Very good'], ['B3', '65-69', 'Good'], ['C4', '60-64', 'Credit'], ['C5', '55-59', 'Credit'], ['C6', '50-54', 'Credit'], ['D7', '45-49', 'Pass'], ['E8', '40-44', 'Weak pass'], ['F9', '0-39', 'Fail']]
+  : [['A', '80-100', 'Excellent'], ['B', '70-79', 'Very good'], ['C', '60-69', 'Credit'], ['P', '50-59', 'Pass'], ['F', '0-49', 'Fail']]);
+export const mockOf = (S, n, s) => { const v = S.scores[n] && S.scores[n][s] && S.scores[n][s].mock; return v === undefined || v === '' || v === null ? null : +v; };
+export const mockGrade = (S, v) => (v === null ? '' : gradeOf(v, isSenior(S)));
 const r2 = (x) => Math.round(x * 100) / 100;
 export const getScore = (S, n, s) => (S.scores[n] && S.scores[n][s]) || {};
 export const calc = (S, n, s) => {
@@ -28,7 +38,7 @@ export const calc = (S, n, s) => {
   const t = S.comps.reduce((a, c) => a + (+v[c.k] || 0), 0);
   const mt = maxTotal(S);
   const p = mt ? (t / mt) * 100 : 0;
-  return { f, t: r2(t), p: r2(p), g: f ? gradeOf(p) : '' };
+  return { f, t: r2(t), p: r2(p), g: f ? gradeOf(p, isSenior(S)) : '', gc: f ? gradeClass(gradeOf(p, isSenior(S))) : '' };
 };
 export const scoredCount = (S, s) => S.students.filter((st) => calc(S, st.n, s).f).length;
 
@@ -44,5 +54,5 @@ export const overall = (S, st) => {
   const mt = maxTotal(S) * r.length;
   const sum = r.reduce((a, c) => a + c.t, 0);
   const pct = mt ? Math.round((sum / mt) * 1000) / 10 : 0;
-  return { n: r.length, sum: Math.round(sum * 100) / 100, max: mt, pct, g: r.length ? gradeOf(pct) : '' };
+  return { n: r.length, sum: Math.round(sum * 100) / 100, max: mt, pct, g: r.length ? gradeOf(pct, isSenior(S)) : '', gc: r.length ? gradeClass(gradeOf(pct, isSenior(S))) : '' };
 };
