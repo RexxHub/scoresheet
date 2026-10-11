@@ -37,3 +37,13 @@ Without the two variables, the app runs in offline mode and saves to the browser
 - Everyone who signs up after that is a **teacher** and only sees the Enter scores tab.
 - To make someone else an admin, open Supabase > Table Editor > profiles and change their `role` to `admin`.
 - After your teachers have accounts, turn off public sign-ups: Supabase > Authentication > Sign In / Providers > turn off "Allow new users to sign up", and add later teachers under Authentication > Users > Add user.
+
+
+## Classes, teachers and publishing
+- The admin adds each class (Year 7 to Year 12, with an optional arm such as A) using **+ New class** at the top.
+- For each class the admin fills in the students, subjects and score columns, picks a teacher for every subject under **Teacher assignments**, then presses **Publish to teachers**.
+- A teacher only sees published classes where a subject is assigned to them, and only those subjects. They can enter scores (CA and mock) and nothing else. They cannot add, edit or delete classes.
+- Unpublish a class to hide it from teachers. Scores already entered are kept.
+- School name, address, session, term and assessment round are shared by all classes.
+- Year 7 to 9 is the junior section (A to F). Year 10 to 12 is the senior section (A1 to F9).
+- Run `supabase.sql` once after updating. It also moves an older single-class setup into a first class.

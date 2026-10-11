@@ -5,6 +5,7 @@ export default function Scores({ S, up }) {
   const [cur, setCur] = useState(0);
   const [bad, setBad] = useState('');
   const [mode, setMode] = useState('ca');
+  if (!S.subjects.length) return <section className="card"><p className="hint">No subjects are assigned to you in this class yet.</p></section>;
   const idx = cur < S.subjects.length ? cur : 0;
   const sub = S.subjects[idx];
   const st = subjectStats(S, sub);
