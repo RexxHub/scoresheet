@@ -31,7 +31,7 @@ export default function ClassBar({ classes, activeId, admin, onSelect, onAdd, on
           <select value={yr} onChange={(e) => setYr(e.target.value)} aria-label="Year">
             {YEARS.map((y) => <option key={y}>{y}</option>)}
           </select>
-          <input value={arm} onChange={(e) => setArm(e.target.value)} placeholder="Arm (optional, e.g. A)" maxLength={8} aria-label="Arm" />
+          <input value={arm} onChange={(e) => setArm(e.target.value)} placeholder="Arm (optional, e.g. A)" maxLength={15} aria-label="Arm" />
           <button type="button" className="btn" onClick={create} disabled={busy}>{busy ? 'Creating...' : 'Create class'}</button>
           <button type="button" className="lnk" onClick={() => { setAdding(false); setMsg(''); }}>Cancel</button>
           {msg && <span className="err">{msg}</span>}
