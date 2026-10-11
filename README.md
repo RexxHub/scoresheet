@@ -49,3 +49,7 @@ Without the two variables, the app runs in offline mode and saves to the browser
 - Run `supabase.sql` once after updating. It also moves an older single-class setup into a first class.
 
 - Mock exams are only for Year 9 (junior) and Year 12 (senior). The Mock exam switch and the Mock certificates tab appear only for those classes.
+
+## Backups
+- Admin > Backup and export > **Download backup** saves everything in one .json file. Do it at the end of each term.
+- **Results spreadsheet** downloads marks, totals, percentages and grades as a .csv file that opens in Excel (all classes, or one class).

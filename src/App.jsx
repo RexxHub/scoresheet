@@ -12,11 +12,12 @@ import Scores from './Scores.jsx';
 import Reports from './Reports.jsx';
 import Certificates from './Certificates.jsx';
 import ClassBar from './ClassBar.jsx';
+import Backup from './Backup.jsx';
 import Logo from './Logo.jsx';
 import Footer from './Footer.jsx';
 
-const TABS = [['set', 'Setup', 'set'], ['sco', 'Enter scores', 'edit'], ['rep', 'Report slips', 'file'], ['cer', 'Mock certificates', 'file']];
-const SUB = { set: 'School, class, subjects, students and teachers', sco: 'Record marks one subject at a time', rep: 'Review, add remarks and print', cer: 'Print the mock statement of result' };
+const TABS = [['set', 'Setup', 'set'], ['sco', 'Enter scores', 'edit'], ['rep', 'Report slips', 'file'], ['cer', 'Mock certificates', 'file'], ['bak', 'Backup and export', 'file']];
+const SUB = { set: 'School, class, subjects, students and teachers', sco: 'Record marks one subject at a time', rep: 'Review, add remarks and print', cer: 'Print the mock statement of result', bak: 'Download your records' };
 const missingTable = (e) => e && (e.code === 'PGRST205' || e.code === '42P01' || /(schema cache|does not exist)/i.test(e.message || ''));
 
 // school-wide fields are saved once; class fields (cls, teacher, desig, section) belong to each class
@@ -268,7 +269,7 @@ export default function App() {
     );
   }
 
-  const visible = isAdmin ? TABS.filter((t) => t[0] !== 'cer' || (S && hasMock(S))) : TABS.filter((t) => t[0] === 'sco');
+  const visible = isAdmin ? TABS.filter((t) => (t[0] !== 'cer' || (S && hasMock(S))) && (t[0] !== 'bak' || configured)) : TABS.filter((t) => t[0] === 'sco');
   const cur = visible.some((t) => t[0] === tab) ? tab : visible[0][0];
   const who = session && (session.user.user_metadata.name || session.user.email);
   const cx = configured && isAdmin && cls ? {
@@ -307,20 +308,21 @@ export default function App() {
         )}
         <div className="top noprint">
           <div>
-            <h1>{S ? visible.find((t) => t[0] === cur)[1] : 'Classes'}</h1>
-            <p>{S ? `${SUB[cur]}. ${S.school.cls}, ${S.school.term} term, ${S.school.session} session.` : 'Create your first class to begin.'}</p>
+            <h1>{visible.find((t) => t[0] === cur)[1]}</h1>
+            <p>{cur === 'bak' ? SUB.bak : S ? `${SUB[cur]}. ${S.school.cls}, ${S.school.term} term, ${S.school.session} session.` : 'Create your first class to begin.'}</p>
           </div>
           <span className="topr">
             {configured && !isAdmin && <button className="btn alt" onClick={refresh}>Refresh</button>}
             {configured && status && <span className="save">{status}</span>}
           </span>
         </div>
-        {!S && (
+        {!S && cur !== 'bak' && (
           <section className="card">
             <h2>No class yet</h2>
             <p className="hint">Use <b>+ New class</b> above to add a class (Year 7 to Year 12). Then fill in its students and subjects, assign a teacher to each subject, and publish it.</p>
           </section>
         )}
+        {cur === 'bak' && glob && <Backup classes={classes} glob={glob} />}
         {S && cur === 'set' && <Setup key={activeId} S={S} up={up} cx={cx} />}
         {S && cur === 'sco' && <Scores key={activeId} S={S} up={up} />}
         {S && cur === 'rep' && <Reports key={activeId} S={S} up={up} />}

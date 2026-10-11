@@ -89,3 +89,21 @@ export async function saveScores(classId, period, prev, next) {
   }
   return null;
 }
+
+// Everything in the database, for the admin's backup file
+export async function fetchEverything() {
+  const school = await supabase.from('school').select('data').eq('id', 1).maybeSingle();
+  const classes = await supabase.from('classes').select('*');
+  const assignments = await supabase.from('assignments').select('*');
+  const people = await supabase.from('profiles').select('id,email,name,role');
+  for (const r of [school, classes, assignments, people]) if (r.error) return { error: r.error };
+  const scores = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await supabase.from('class_scores').select('class_id,period,student,subject,comp,value,updated_at')
+      .order('class_id').order('period').order('student').order('subject').order('comp').range(from, from + 999);
+    if (error) return { error };
+    scores.push(...data);
+    if (data.length < 1000) break;
+  }
+  return { data: { school: school.data ? school.data.data : null, classes: classes.data, assignments: assignments.data, people: people.data, scores } };
+}
