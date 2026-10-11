@@ -57,7 +57,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .mk th small{display:block;font-weight:400;font-size:11px}
 .mk td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
 .mk tbody tr:nth-child(even) td{background:var(--stripe)}
-.mk tbody tr:hover td{background:#87ceeb}}
+.mk tbody tr:hover td{background:#654ff3}
 .mk .nm{text-align:left;font-weight:600;min-width:190px;position:sticky;left:0;background:var(--card)}
 .mk th.nm{z-index:3;background:var(--stripe)}
 .mk tbody tr:nth-child(even) td.nm{background:var(--stripe)}
