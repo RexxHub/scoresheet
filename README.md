@@ -26,7 +26,7 @@ Teachers key in continuous assessment scores per subject; the app totals, grades
    - Copy `.env.example` to `.env` and fill them in, then restart `npm run dev`.
    - Or paste them into `src/config.js` (the anon key is public by design) and push to GitHub, which works on Netlify without environment variables.
 4. Run `npm install` then `npm run dev`. You will see the log in / create account screen.
-5. On Vercel: Project Settings > Environment Variables, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then redeploy.
+5. On Vercel (either works): connect Supabase with the Vercel integration, which creates `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (the app reads these), or add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` yourself. Then redeploy. Old instructions: Project Settings > Environment Variables, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then redeploy.
 6. Optional: in Supabase Authentication > Providers > Email, turn off "Confirm email" if you want teachers to log in right after signing up.
 
 Without the two variables, the app runs in offline mode and saves to the browser only.

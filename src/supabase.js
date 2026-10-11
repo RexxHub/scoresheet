@@ -22,8 +22,10 @@ const pick = (...sets) => {
   return null;
 };
 
-const envUrl = import.meta.env.VITE_SUPABASE_URL;
-const envKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Accepts the VITE_ names, and also the NEXT_PUBLIC_ names that the Vercel + Supabase integration creates.
+const env = import.meta.env;
+const envUrl = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL;
+const envKey = env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const cfg = pick([envUrl, envKey], [SUPABASE_URL, SUPABASE_ANON_KEY], [stored().url, stored().key]);
 
 export const configured = Boolean(cfg);
