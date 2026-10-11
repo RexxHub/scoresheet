@@ -21,7 +21,10 @@ Teachers key in continuous assessment scores per subject; the app totals, grades
 ## Teacher accounts (Supabase)
 1. Create a free project at supabase.com.
 2. Open SQL Editor, paste the contents of `supabase.sql`, and run it. This creates the `ca_state` table and makes each teacher see only their own data. It is safe to run twice. If you forget, the app shows this SQL on screen with a Copy button.
-3. Copy `.env.example` to `.env` and fill in your Project URL and anon key (Project Settings > API).
+3. Give the app your Project URL and anon key (Project Settings > API) in any ONE of these ways:
+   - Easiest: open the app and paste them on the "Connect to Supabase" screen. It tests them and remembers them in that browser.
+   - Copy `.env.example` to `.env` and fill them in, then restart `npm run dev`.
+   - Or paste them into `src/config.js` (the anon key is public by design) and push to GitHub, which works on Netlify without environment variables.
 4. Run `npm install` then `npm run dev`. You will see the log in / create account screen.
 5. On Vercel: Project Settings > Environment Variables, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then redeploy.
 6. Optional: in Supabase Authentication > Providers > Email, turn off "Confirm email" if you want teachers to log in right after signing up.

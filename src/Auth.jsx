@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from './supabase.js';
+import { supabase, hasStoredConfig, clearConfig } from './supabase.js';
 import { defaults } from './lib.js';
 import Logo from './Logo.jsx';
 import Footer from './Footer.jsx';
@@ -22,7 +22,7 @@ export default function Auth() {
       ? await supabase.auth.signInWithPassword({ email, password })
       : await supabase.auth.signUp({ email, password, options: { data: { name } } });
     setBusy(false);
-    if (res.error) setMsg({ text: res.error.message, ok: false });
+    if (res.error) setMsg({ text: /failed to fetch|networkerror/i.test(res.error.message) ? 'Cannot reach Supabase. The Project URL is wrong, the project is paused, or your internet is down.' : res.error.message, ok: false });
     else if (mode === 'up' && !res.data.session) {
       setMsg({ text: 'Account created. Check your email to confirm it, then log in.', ok: true });
       setMode('in');
@@ -63,6 +63,7 @@ export default function Auth() {
             </button>
           </p>
         </form>
+        {hasStoredConfig() && <p className="swap"><button type="button" className="lnk" onClick={() => { clearConfig(); window.location.reload(); }}>Wrong Supabase keys? Change them</button></p>}
         <Footer />
       </div>
     </div>

@@ -4,6 +4,7 @@ import Icon from './Icon.jsx';
 import { supabase, configured } from './supabase.js';
 import Auth from './Auth.jsx';
 import SetupHelp from './SetupHelp.jsx';
+import ConnectSupabase from './ConnectSupabase.jsx';
 import Setup from './Setup.jsx';
 import Scores from './Scores.jsx';
 import Reports from './Reports.jsx';
@@ -20,6 +21,7 @@ export default function App() {
   const [ready, setReady] = useState(!configured);
   const [status, setStatus] = useState('');
   const [noTable, setNoTable] = useState(false);
+  const [offline, setOffline] = useState(false);
   const [tab, setTab] = useState('set');
   const uid = session && session.user.id;
 
@@ -65,6 +67,7 @@ export default function App() {
 
   const up = (fn) => setS((prev) => { const n = structuredClone(prev); fn(n); return n; });
 
+  if (!configured && !offline) return <ConnectSupabase onOffline={() => setOffline(true)} />;
   if (session === undefined) return <p className="center">Loading...</p>;
   if (configured && !session) return <Auth />;
   if (configured && noTable) return <SetupHelp onRetry={() => window.location.reload()} />;
@@ -101,7 +104,7 @@ export default function App() {
         )}
       </aside>
       <div className="content">
-        {!configured && <p className="banner noprint">Offline mode: scores are saved in this browser only. Add Supabase keys to turn on teacher accounts.</p>}
+        {!configured && <p className="banner noprint">Offline mode: scores are saved in this browser only. <button className="lnk" onClick={() => setOffline(false)}>Connect Supabase</button> to turn on teacher accounts.</p>}
         <div className="top noprint">
           <div>
             <h1>{TABS.find((t) => t[0] === tab)[1]}</h1>
