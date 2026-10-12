@@ -215,3 +215,7 @@ aside,.authside{background:linear-gradient(180deg,#1b1129 0%,#2b1e3e 100%)}
 .btn:hover{filter:brightness(1.1)}
 .stat u{background:linear-gradient(90deg,#4a4e8f,#a490c2)}
 .badge.live{background:#1f4a3a;color:#9ae6c0}
+/* login: logo centered above school name */
+.authside{align-items:center;text-align:center}
+.authside .logotile.big{margin-left:auto;margin-right:auto}
+.authside p{margin-left:auto;margin-right:auto}

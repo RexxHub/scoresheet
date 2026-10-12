@@ -285,7 +285,7 @@ export default function App() {
       <aside className="noprint">
         <div className="brand">
           <span className="logotile"><Logo size="sm" /></span>
-          <div><b>{S ? S.school.name : 'CA Score Portal'}</b><small>CA Score Portal</small></div>
+          <div><b>{S ? S.school.name : 'Senior Secondary School'}</b><small>Continuous Assessment Result Portal</small></div>
         </div>
         <nav className="side" role="tablist">
           {visible.map(([k, l, ic]) => (
