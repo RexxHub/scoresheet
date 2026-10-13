@@ -7,7 +7,7 @@ export const parseStudents = (t) => t.split('\n').map((l) => l.trim()).filter(Bo
 });
 
 export const defaults = () => ({
-  school: { name: 'THE WINS SECONDARY SCHOOL', addr: 'No.8 Rangers Avenue, Independence Layout Enugu', ca: 'FIRST', session: '2025/2026', section: 'JUNIOR SECTION', term: '2ND', cls: 'YEAR 8', teacher: '', desig: '' },
+  school: { name: 'THE WINS SECONDARY SCHOOL ENUGU', addr: 'No.8 Rangers Avenue, Independence Layout Enugu', ca: 'FIRST', session: '2025/2026', section: 'JUNIOR SECTION', term: '2ND', cls: 'YEAR 8', teacher: '', desig: '' },
   comps: [{ k: 'ha', n: 'H/A', m: 5 }, { k: 'cw', n: 'C/W', m: 2 }, { k: 'as', n: 'ASS', m: 2 }, { k: 'nt', n: 'NOTE', m: 1 }, { k: 'cat', n: 'CAT1', m: 10 }],
   subjects: SUBJECTS, students: parseStudents(NAMES), scores: {}, rem: {},
 });
