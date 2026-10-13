@@ -128,6 +128,22 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Log out for good: ask Supabase to end the session, but even if that request fails
+  // (blocked, offline, ad blocker) clear the saved login on this device and show the log in screen.
+  const logout = async () => {
+    let failed = false;
+    try {
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
+      if (error) failed = true;
+    } catch (e) { failed = true; }
+    try {
+      Object.keys(localStorage).filter((k) => /^sb-.*-auth-token/.test(k)).forEach((k) => localStorage.removeItem(k));
+      Object.keys(sessionStorage).filter((k) => /^sb-.*-auth-token/.test(k)).forEach((k) => sessionStorage.removeItem(k));
+    } catch (e) { /* ignore */ }
+    setSession(null);
+    if (failed) window.location.reload();
+  };
+
   // ---- first load after login
   useEffect(() => {
     if (!configured) return;
@@ -264,7 +280,7 @@ export default function App() {
       <p className="center">
         No class has been assigned to you yet. Ask the admin to assign you a subject and publish the class.<br />
         <button className="btn" onClick={refresh}>Check again</button>{' '}
-        <button className="btn alt" onClick={() => supabase.auth.signOut()}>Log out</button>
+        <button className="btn alt" onClick={logout}>Log out</button>
       </p>
     );
   }
@@ -285,7 +301,7 @@ export default function App() {
       <aside className="noprint">
         <div className="brand">
           <span className="logotile"><Logo size="sm" /></span>
-          <div><b>{S ? S.school.name : 'CA Score Portal'}</b><small>CA Score Portal</small></div>
+          <div><b>{S ? S.school.name : 'Senior Secondary School'}</b><small>Continuous Assessment Result Portal</small></div>
         </div>
         <nav className="side" role="tablist">
           {visible.map(([k, l, ic]) => (
@@ -297,7 +313,7 @@ export default function App() {
         {configured && (
           <div className="me">
             <span className="who">{who}<br /><small>{isAdmin ? 'Admin' : 'Teacher'}</small></span>
-            <button className="out" onClick={() => supabase.auth.signOut()}><Icon n="out" />Log out</button>
+            <button className="out" onClick={logout}><Icon n="out" />Log out</button>
           </div>
         )}
       </aside>
