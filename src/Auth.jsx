@@ -34,7 +34,7 @@ export default function Auth() {
       <div className="authside">
         <span className="logotile big"><Logo size="lg" /></span>
         <h1>{school}</h1>
-        <p>Senior Secondary School Continuous Assessment Result Portal</p>
+        <p>Record continuous assessment scores once, then print clean report slips for every student.</p>
       </div>
       <div className="authmain">
         <form className="auth" onSubmit={submit}>
