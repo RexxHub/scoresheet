@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as cloud from './cloud.js';
 import { periodOf } from './cloud.js';
-import { calc, maxTotal, mockOf, mockGrade, defaults } from './lib.js';
+import { calc, maxTotal, mockOf, mockGrade, defaults, f1 } from './lib.js';
 import Icon from './Icon.jsx';
 
 const KEY = 'caportal_last_backup';
@@ -37,7 +37,7 @@ async function resultsCsv(list, glob) {
   }
   const head = ['Class', 'Session', 'Term', 'Assessment', 'Student', 'Gender', 'Subject', ...names, 'Total', 'Out of', 'Percent', 'Grade', 'Mock score', 'Mock grade'];
   const lines = [head, ...rows.map((x) => [x.cls, glob.session, glob.term, glob.ca, x.n, x.g, x.sub, ...names.map((n) => (n in x.parts ? x.parts[n] : '')),
-    x.f.f ? x.f.t : '', x.f.f ? x.max : '', x.f.f ? x.f.p : '', x.f.f ? x.f.g : '', x.mk === null ? '' : x.mk, x.mg])];
+    x.f.f ? f1(x.f.t) : '', x.f.f ? x.max : '', x.f.f ? f1(x.f.p) : '', x.f.f ? x.f.g : '', x.mk === null ? '' : x.mk, x.mg])];
   return { csv: '\ufeff' + lines.map((l) => l.map(cell).join(',')).join('\r\n'), count: rows.length };
 }
 
