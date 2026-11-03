@@ -67,6 +67,7 @@ export default function Certificates({ S, up }) {
       </section>
       {list.map((st) => (
         <section className="cert" key={st.n}>
+          <div className="cframe"><i /><i /><i /><i /></div>
           <img className="wm" src={logo} alt="" />
           <div className="ch">
             <h2 className="cn">{sch.name}</h2>
