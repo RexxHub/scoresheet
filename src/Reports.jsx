@@ -53,7 +53,7 @@ export default function Reports({ S, up }) {
                 </tr>
               </thead>
               <tbody>
-                {S.subjects.map((s, i) => {
+                {S.subjects.filter((s) => calc(S, st.n, s).f).map((s, i) => {
                   const v = getScore(S, st.n, s), c = calc(S, st.n, s);
                   return (
                     <tr key={s}>
