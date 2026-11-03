@@ -1,4 +1,4 @@
-import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass } from './lib.js';
+import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass, remarkOf } from './lib.js';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 
@@ -78,7 +78,7 @@ export default function Reports({ S, up }) {
             </p>
             <div className="sig">
               <label className="w">Remark
-                <textarea value={S.rem[st.n] || ''} onChange={(e) => up((d) => { d.rem[st.n] = e.target.value; })} />
+                <textarea value={S.rem[st.n] === undefined ? remarkOf(o.g, st.n) : S.rem[st.n]} onChange={(e) => up((d) => { d.rem[st.n] = e.target.value; })} />
               </label>
               <div><small>Name</small><span>{sch.teacher}</span></div>
               <div><small>Designation</small><span>{sch.desig}</span></div>
