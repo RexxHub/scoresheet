@@ -44,6 +44,31 @@ export const gradeClass = (g) => (/^[DE]/.test(g) ? 'P' : g ? g[0] : '');
 export const LEGEND = (sen) => (sen
   ? [['A1', '80-100', 'Excellent'], ['B2', '70-79', 'Very good'], ['B3', '65-69', 'Good'], ['C4', '60-64', 'Credit'], ['C5', '55-59', 'Credit'], ['C6', '50-54', 'Credit'], ['D7', '45-49', 'Pass'], ['E8', '40-44', 'Weak pass'], ['F9', '0-39', 'Fail']]
   : [['A', '80-100', 'Excellent'], ['B', '70-79', 'Very good'], ['C', '60-69', 'Credit'], ['P', '50-59', 'Pass'], ['F', '0-49', 'Fail']]);
+// default remarks for each overall grade; one is picked per student (the same student always gets the same one)
+const R_A = ['Excellent result. Keep up the great work.', 'Outstanding performance. Keep it up.', 'Brilliant work. Maintain this standard.', 'An excellent display of hard work. Well done.', 'Very impressive result. Keep aiming high.'];
+const R_B = ['A very good performance. Aim higher next time.', 'Very good work. A little more effort will make it excellent.', 'A commendable result. Keep working hard.', 'Well done. You can still do better.', 'A very good effort. Keep it up.'];
+const R_C = ['A good effort. More practice will bring improvement.', 'A fair performance. Put in more effort.', 'Good, but there is room for improvement.', 'A satisfactory result. Work harder next term.', 'You can do better with more focus and practice.'];
+const R_P = ['A fair pass. Put in more effort to improve.', 'Just a pass. You need to work harder.', 'An average result. Give more time to your studies.', 'Needs more focus and regular practice.', 'You can do better. Be more serious with your books.'];
+const R_F = ['Poor result. Needs serious attention and extra support.', 'Below expectation. Much more effort is required.', 'Very weak performance. Extra lessons are advised.', 'Needs to work much harder and seek help.', 'Unsatisfactory. Serious improvement is needed.'];
+const REMARKS = {
+  A: R_A, B: R_B, C: R_C, P: R_P, F: R_F,
+  A1: R_A, B2: R_B,
+  B3: ['A good performance. You can do even better.', 'Good work. Keep pushing for higher.', 'A good result. More effort will bring improvement.'],
+  C4: ['A credit pass. Work harder to improve.', 'A credit result. Aim higher next time.', 'A fair credit. Put in more effort.'],
+  C5: ['A credit pass. More effort is needed.', 'An average credit. Be more serious with your studies.', 'Fair result. Work harder to improve.'],
+  C6: ['A low credit pass. Put in more effort.', 'Just a credit. Much more effort is needed.', 'Barely a credit. Give more time to your books.'],
+  D7: ['A pass. You need to work much harder.', 'A weak pass. Be more serious with your studies.', 'Below average. More effort is needed.'],
+  E8: ['A weak pass. Serious improvement is needed.', 'Very low pass. Extra lessons are advised.', 'Needs to work much harder to avoid failing.'],
+  F9: R_F,
+};
+export const remarkOf = (g, name = '') => {
+  const list = REMARKS[g];
+  if (!list) return '';
+  let h = 0;
+  const k = String(name) + g;
+  for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
+  return list[h % list.length];
+};
 export const mockOf = (S, n, s) => { const v = S.scores[n] && S.scores[n][s] && S.scores[n][s].mock; return v === undefined || v === '' || v === null ? null : +v; };
 export const mockGrade = (S, v) => (v === null ? '' : gradeOf(v, isSenior(S)));
 const r2 = (x) => Math.round(x * 100) / 100;
