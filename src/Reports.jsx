@@ -1,4 +1,4 @@
-import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass, remarkOf } from './lib.js';
+import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass, remarkOf, f1 } from './lib.js';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 import { readSig } from './Certificates.jsx';
@@ -20,7 +20,22 @@ export default function Reports({ S, up }) {
           <label>Teacher signature (picture, shown on every student's slip)
             <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files[0]; if (f) readSig(f, (u) => up((d) => { d.school.rsig = u; })); e.target.value = ''; }} />
           </label>
+          <label>Coordinator name
+            <input value={sch.coordName || ''} onChange={(e) => up((d) => { d.school.coordName = e.target.value; })} />
+          </label>
+          <label>Coordinator designation
+            <input value={sch.coordDesig || ''} placeholder="Coordinator" onChange={(e) => up((d) => { d.school.coordDesig = e.target.value; })} />
+          </label>
+          <label>Coordinator signature (picture)
+            <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files[0]; if (f) readSig(f, (u) => up((d) => { d.school.coordSig = u; })); e.target.value = ''; }} />
+          </label>
         </div>
+        {sch.coordSig && (
+          <p className="hint">
+            <img src={sch.coordSig} alt="Coordinator signature" style={{ height: 40, verticalAlign: 'middle', border: '1px solid var(--line)', background: '#fff' }} />{' '}
+            <button type="button" className="lnk" onClick={() => up((d) => { d.school.coordSig = ''; })}>Remove coordinator signature</button>
+          </p>
+        )}
         {sch.rsig && (
           <p className="hint">
             <img src={sch.rsig} alt="Signature" style={{ height: 40, verticalAlign: 'middle', border: '1px solid var(--line)', background: '#fff' }} />{' '}
@@ -71,7 +86,7 @@ export default function Reports({ S, up }) {
                     <tr key={s}>
                       <td>{i + 1}</td><td className="s">{s}</td>
                       {S.comps.map((k) => <td key={k.k}>{v[k.k] === undefined || v[k.k] === '' ? '' : v[k.k]}</td>)}
-                      <td><b>{c.f ? c.t : ''}</b></td><td>{c.f ? c.p : ''}</td>
+                      <td><b>{c.f ? f1(c.t) : ''}</b></td><td>{c.f ? f1(c.p) : ''}</td>
                       <td>{c.f && <span className={`chip ${c.gc}`}>{c.g}</span>}</td>
                     </tr>
                   );
@@ -80,21 +95,33 @@ export default function Reports({ S, up }) {
             </table>
             {o.n > 0 && (
               <div className="sum">
-                <div><small>Total obtained</small><b>{o.sum} / {o.max}</b></div>
-                <div><small>Overall percentage</small><b>{o.pct}%</b></div>
+                <div><small>Total obtained</small><b>{f1(o.sum)} / {o.max}</b></div>
+                <div><small>Overall percentage</small><b>{f1(o.pct)}%</b></div>
                 <div><small>Overall grade</small><b><span className={`chip ${o.gc}`}>{o.g}</span></b></div>
               </div>
             )}
             <p className="scale">
               {LEGEND(isSenior(S)).map(([g, r, t]) => <span key={g}><i className={`chip ${gradeClass(g)}`}>{g}</i> {r} {t}</span>)}
             </p>
-            <div className="sig">
-              <label className="w">Remark
-                <textarea value={S.rem[st.n] === undefined ? remarkOf(o.g, st.n) : S.rem[st.n]} onChange={(e) => up((d) => { d.rem[st.n] = e.target.value; })} />
-              </label>
-              <div><small>Name</small><span>{sch.teacher}</span></div>
-              <div><small>Designation</small><span>{sch.desig}</span></div>
-              <div className="w"><small>Sign / Date</small>{sch.rsig ? <img className="sigimg" src={sch.rsig} alt="" /> : <span />}</div>
+            <div className="sigs">
+              <div className="sig">
+                <b className="ttl">Class Teacher</b>
+                <label className="w">Remark
+                  <textarea value={S.rem[st.n] === undefined ? remarkOf(o.g, st.n) : S.rem[st.n]} onChange={(e) => up((d) => { d.rem[st.n] = e.target.value; })} />
+                </label>
+                <div><small>Name</small><span>{sch.teacher}</span></div>
+                <div><small>Designation</small><span>{sch.desig}</span></div>
+                <div className="w"><small>Sign / Date</small>{sch.rsig ? <img className="sigimg" src={sch.rsig} alt="" /> : <span />}</div>
+              </div>
+              <div className="sig">
+                <b className="ttl">Coordinator</b>
+                <label className="w">Remark
+                  <textarea value={S.rem[st.n + '|coord'] === undefined ? remarkOf(o.g, st.n + '#C') : S.rem[st.n + '|coord']} onChange={(e) => up((d) => { d.rem[st.n + '|coord'] = e.target.value; })} />
+                </label>
+                <div><small>Name</small><span>{sch.coordName}</span></div>
+                <div><small>Designation</small><span>{sch.coordDesig || 'Coordinator'}</span></div>
+                <div className="w"><small>Sign / Date</small>{(sch.coordSig || (sch.cert && sch.cert.sig)) ? <img className="sigimg" src={sch.coordSig || sch.cert.sig} alt="" /> : <span />}</div>
+              </div>
             </div>
           </section>
         );
