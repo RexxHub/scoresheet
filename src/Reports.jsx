@@ -105,7 +105,6 @@ export default function Reports({ S, up }) {
             </p>
             <div className="sigs">
               <div className="sig">
-                <b className="ttl">Class Teacher</b>
                 <label className="w">Remark
                   <textarea value={S.rem[st.n] === undefined ? remarkOf(o.g, st.n) : S.rem[st.n]} onChange={(e) => up((d) => { d.rem[st.n] = e.target.value; })} />
                 </label>
@@ -114,7 +113,6 @@ export default function Reports({ S, up }) {
                 <div className="w"><small>Sign / Date</small>{sch.rsig ? <img className="sigimg" src={sch.rsig} alt="" /> : <span />}</div>
               </div>
               <div className="sig">
-                <b className="ttl">Coordinator</b>
                 <label className="w">Remark
                   <textarea value={S.rem[st.n + '|coord'] === undefined ? remarkOf(o.g, st.n + '#C') : S.rem[st.n + '|coord']} onChange={(e) => up((d) => { d.rem[st.n + '|coord'] = e.target.value; })} />
                 </label>
