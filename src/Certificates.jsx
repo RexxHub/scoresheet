@@ -6,7 +6,7 @@ const TERMW = { '1ST': 'First', '2ND': 'Second', '3RD': 'Third' };
 const title = (t) => String(t || '').toLowerCase().replace(/\b\w/g, (ch) => ch.toUpperCase());
 
 // shrink the picked signature so it stays small when saved
-const readSig = (file, done) => {
+export const readSig = (file, done) => {
   const fr = new FileReader();
   fr.onload = () => {
     const img = new Image();
