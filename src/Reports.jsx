@@ -1,6 +1,7 @@
 import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, sectionOf, gradeClass, remarkOf } from './lib.js';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
+import { readSig } from './Certificates.jsx';
 
 export default function Reports({ S, up }) {
   const sch = S.school;
@@ -15,6 +16,17 @@ export default function Reports({ S, up }) {
           </div>
           <button className="btn" onClick={() => window.print()}><Icon n="print" />Print all slips</button>
         </div>
+        <div className="fields">
+          <label>Teacher signature (picture, shown on every student's slip)
+            <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files[0]; if (f) readSig(f, (u) => up((d) => { d.school.rsig = u; })); e.target.value = ''; }} />
+          </label>
+        </div>
+        {sch.rsig && (
+          <p className="hint">
+            <img src={sch.rsig} alt="Signature" style={{ height: 40, verticalAlign: 'middle', border: '1px solid var(--line)', background: '#fff' }} />{' '}
+            <button type="button" className="lnk" onClick={() => up((d) => { d.school.rsig = ''; })}>Remove signature</button>
+          </p>
+        )}
         <div className="chk">
           {S.subjects.map((s) => {
             const n = scoredCount(S, s);
@@ -82,7 +94,7 @@ export default function Reports({ S, up }) {
               </label>
               <div><small>Name</small><span>{sch.teacher}</span></div>
               <div><small>Designation</small><span>{sch.desig}</span></div>
-              <div className="w"><small>Sign / Date</small><span /></div>
+              <div className="w"><small>Sign / Date</small>{sch.rsig ? <img className="sigimg" src={sch.rsig} alt="" /> : <span />}</div>
             </div>
           </section>
         );
