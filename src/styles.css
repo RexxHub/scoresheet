@@ -163,6 +163,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .seg button[aria-pressed=true]{background:var(--acc);color:var(--onacc)}
 .cert{position:relative;background:#fff;color:#111;border:1px solid #cdd5e1;border-radius:4px;max-width:760px;width:100%;margin:0 auto;padding:34px 46px;display:flex;flex-direction:column;min-height:980px;overflow:hidden;font-family:"Times New Roman",Times,serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .cert>*{position:relative}
+.cert>.cframe{position:absolute;inset:10px;border:1px solid #222;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 8px #00007f,inset 0 0 0 10px #fff,inset 0 0 0 11px #222;pointer-events:none;z-index:2}
+.cframe i{position:absolute;width:15px;height:15px;border:1px solid #222}
+.cframe i:nth-child(1){top:-1px;left:-1px}.cframe i:nth-child(2){top:-1px;right:-1px}.cframe i:nth-child(3){bottom:-1px;left:-1px}.cframe i:nth-child(4){bottom:-1px;right:-1px}
 .cert .wm{position:absolute;left:50%;top:50%;width:64%;transform:translate(-50%,-50%);opacity:.09;pointer-events:none}
 .ch{text-align:center}
 .cn{margin:0;font:700 25px Arial,sans-serif;color:#12284c}
@@ -185,7 +188,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .cfoot b{display:block;color:#12284c;font:700 11px "Times New Roman",serif}
 .cdate{display:block;color:#b3261e;font:12px "Times New Roman",serif;margin-bottom:2px}
 @media print{
- .cert{border:0;border-radius:0;margin:0;max-width:none;min-height:272mm;break-after:page;page-break-after:always}
+ .cert{border:0;border-radius:0;margin:0;max-width:none;width:100%;height:279mm;min-height:0;padding:15mm 17mm 13mm;break-after:page;page-break-after:always;break-inside:avoid;page-break-inside:avoid}
+ .cert>.cframe{inset:2px}
  .cert:last-child{break-after:auto;page-break-after:auto}
 }
 .classbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin:0 0 14px}
