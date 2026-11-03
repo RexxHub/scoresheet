@@ -2,7 +2,6 @@ import { calc, maxTotal, getScore, scoredCount, overall, LEGEND, isSenior, secti
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 import { readSig } from './Certificates.jsx';
-import logo from './assets/logo.png';
 
 export default function Reports({ S, up }) {
   const sch = S.school;
@@ -54,7 +53,6 @@ export default function Reports({ S, up }) {
         const o = overall(S, st);
         return (
           <section className="slip" key={st.n}>
-            <img className="wm" src={logo} alt="" />
             <div className="sh">
               <Logo size="rs" />
               <div>
@@ -87,7 +85,7 @@ export default function Reports({ S, up }) {
                   return (
                     <tr key={s}>
                       <td>{i + 1}</td><td className="s">{s}</td>
-                      {S.comps.map((k) => <td key={k.k}>{v[k.k] === undefined || v[k.k] === '' ? '' : f1(v[k.k])}</td>)}
+                      {S.comps.map((k) => <td key={k.k}>{v[k.k] === undefined || v[k.k] === '' ? '' : v[k.k]}</td>)}
                       <td><b>{c.f ? f1(c.t) : ''}</b></td><td>{c.f ? f1(c.p) : ''}</td>
                       <td>{c.f && <span className={`chip ${c.gc}`}>{c.g}</span>}</td>
                     </tr>
