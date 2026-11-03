@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { calc, maxTotal, getScore, subjectStats, mockOf, mockGrade, gradeClass, hasMock } from './lib.js';
+import { calc, maxTotal, getScore, subjectStats, mockOf, mockGrade, gradeClass, hasMock, f1 } from './lib.js';
 
 export default function Scores({ S, up }) {
   const [cur, setCur] = useState(0);
@@ -39,7 +39,7 @@ export default function Scores({ S, up }) {
     if (el) { el.focus(); el.select(); }
   };
 
-  const show = (v) => (v === null ? '-' : v);
+  const show = (v) => (v === null ? '-' : f1(v));
 
   return (
     <div className="stack">
@@ -91,7 +91,7 @@ export default function Scores({ S, up }) {
                           value={v[k.k] ?? ''} onChange={(e) => setScore(s.n, k.k, e.target.value, k.m)} onKeyDown={onKey} />
                       </td>
                     ))}
-                    <td className="tot">{c.f ? c.t : ''}</td><td>{c.f ? c.p : ''}</td>
+                    <td className="tot">{c.f ? f1(c.t) : ''}</td><td>{c.f ? f1(c.p) : ''}</td>
                     <td>{c.f && <span className={`chip ${c.gc}`}>{c.g}</span>}</td>
                   </tr>
                 );
