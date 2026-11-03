@@ -21,10 +21,10 @@ const SUB = { set: 'School, class, subjects, students and teachers', sco: 'Recor
 const missingTable = (e) => e && (e.code === 'PGRST205' || e.code === '42P01' || /(schema cache|does not exist)/i.test(e.message || ''));
 
 // school-wide fields are saved once; class fields (cls, teacher, desig, section) belong to each class
-const strip = (o) => { const c = { ...o }; ['cls', 'teacher', 'desig', 'section'].forEach((k) => delete c[k]); return c; };
+const strip = (o) => { const c = { ...o }; ['cls', 'teacher', 'desig', 'section', 'rsig'].forEach((k) => delete c[k]); return c; };
 const cleanGlob = (raw) => ({ ...strip(defaults().school), ...strip(raw || {}) });
 const newClassData = (name) => ({
-  teacher: '', desig: '', comps: defaults().comps, students: [], rem: {},
+  teacher: '', desig: '', rsig: '', comps: defaults().comps, students: [], rem: {},
   subjects: isSenior({ school: { cls: name } }) ? [...SENIOR_SUBJECTS] : [...SUBJECTS],
 });
 
@@ -62,7 +62,7 @@ export default function App() {
     const mine = role === 'admin' ? null : assign.filter((a) => a.class_id === cls.id && a.teacher_id === uid).map((a) => a.subject);
     const subs = d.subjects || [];
     S = {
-      school: { ...glob, cls: cls.name, section: sectionOf({ school: { cls: cls.name } }), teacher: d.teacher || '', desig: d.desig || '' },
+      school: { ...glob, cls: cls.name, section: sectionOf({ school: { cls: cls.name } }), teacher: d.teacher || '', desig: d.desig || '', rsig: d.rsig || '' },
       comps: d.comps || defaults().comps,
       subjects: mine ? subs.filter((s) => mine.includes(s)) : subs,
       students: d.students || [],
@@ -105,7 +105,7 @@ export default function App() {
     setScores(n.scores);
     if (latest.current.role !== 'admin') return;
     setGlob(strip(n.school));
-    setClasses((cs) => cs.map((c) => (c.id === activeId ? { ...c, data: { teacher: n.school.teacher, desig: n.school.desig, comps: n.comps, subjects: n.subjects, students: n.students, rem: n.rem } } : c)));
+    setClasses((cs) => cs.map((c) => (c.id === activeId ? { ...c, data: { teacher: n.school.teacher, desig: n.school.desig, rsig: n.school.rsig || '', comps: n.comps, subjects: n.subjects, students: n.students, rem: n.rem } } : c)));
   };
 
   const openClass = async (id, g) => {
