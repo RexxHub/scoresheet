@@ -90,10 +90,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .rp th{background:#ebe6f4;color:#2b1e3e;font-size:11.5px;padding:6px;border:1px solid #cfc6df}
 .rp td{padding:4px 6px;text-align:center;border:1px solid #d5dce8}
 .rp td.s,.rp th.s{text-align:left}
-.rp tbody tr:nth-child(even){background:rgba(247,249,252,.6)}
-.slip{position:relative;overflow:hidden}
-.slip>*{position:relative}
-.slip>.wm{position:absolute;left:50%;top:50%;width:64%;transform:translate(-50%,-50%);opacity:.09;pointer-events:none}
+.rp tbody tr:nth-child(even){background:#f7f9fc}
 .sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
 .sum div{background:#f2f5fa;border-radius:6px;padding:8px 12px}
 .sum b{font:700 17px "FreeSans","Helvetica Neue",Helvetica,Arial,sans-serif;color:#2b1e3e}
