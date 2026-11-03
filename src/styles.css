@@ -103,6 +103,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .sig textarea{min-height:52px;resize:none;background:#fff;color:#111;border:1px solid #dbe1ec;border-radius:6px}
 .sig div{border-bottom:1px solid #8a96ab;min-height:34px;padding-bottom:3px}
 .sig div span{display:block;font-weight:600}
+.sig .sigimg{display:block;height:44px;max-width:100%;object-fit:contain;margin-top:2px}
 /* auth */
 .authwrap{display:grid;grid-template-columns:minmax(300px,5fr) 6fr;min-height:100vh}
 .authside{background:var(--navy);color:#fff;padding:12vh 8% 8vh;display:flex;flex-direction:column;justify-content:center}
