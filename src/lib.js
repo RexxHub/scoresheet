@@ -71,15 +71,16 @@ export const remarkOf = (g, name = '') => {
 };
 export const mockOf = (S, n, s) => { const v = S.scores[n] && S.scores[n][s] && S.scores[n][s].mock; return v === undefined || v === '' || v === null ? null : +v; };
 export const mockGrade = (S, v) => (v === null ? '' : gradeOf(v, isSenior(S)));
-const r2 = (x) => Math.round(x * 100) / 100;
+const r1 = (x) => Math.round(x * 10) / 10;
+export const f1 = (x) => r1(+x || 0).toFixed(1); // scores are shown to 1 decimal place everywhere
 export const getScore = (S, n, s) => (S.scores[n] && S.scores[n][s]) || {};
 export const calc = (S, n, s) => {
   const v = getScore(S, n, s);
   const f = S.comps.some((c) => v[c.k] !== undefined && v[c.k] !== '');
   const t = S.comps.reduce((a, c) => a + (+v[c.k] || 0), 0);
   const mt = maxTotal(S);
-  const p = mt ? (t / mt) * 100 : 0;
-  return { f, t: r2(t), p: r2(p), g: f ? gradeOf(p, isSenior(S)) : '', gc: f ? gradeClass(gradeOf(p, isSenior(S))) : '' };
+  const p = r1(mt ? (t / mt) * 100 : 0);
+  return { f, t: r1(t), p, g: f ? gradeOf(p, isSenior(S)) : '', gc: f ? gradeClass(gradeOf(p, isSenior(S))) : '' };
 };
 export const scoredCount = (S, s) => S.students.filter((st) => calc(S, st.n, s).f).length;
 
@@ -95,5 +96,5 @@ export const overall = (S, st) => {
   const mt = maxTotal(S) * r.length;
   const sum = r.reduce((a, c) => a + c.t, 0);
   const pct = mt ? Math.round((sum / mt) * 1000) / 10 : 0;
-  return { n: r.length, sum: Math.round(sum * 100) / 100, max: mt, pct, g: r.length ? gradeOf(pct, isSenior(S)) : '', gc: r.length ? gradeClass(gradeOf(pct, isSenior(S))) : '' };
+  return { n: r.length, sum: r1(sum), max: mt, pct, g: r.length ? gradeOf(pct, isSenior(S)) : '', gc: r.length ? gradeClass(gradeOf(pct, isSenior(S))) : '' };
 };
