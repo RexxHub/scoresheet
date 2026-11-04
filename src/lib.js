@@ -69,7 +69,16 @@ export const remarkOf = (g, name = '') => {
   for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) >>> 0;
   return list[h % list.length];
 };
-export const mockOf = (S, n, s) => { const v = S.scores[n] && S.scores[n][s] && S.scores[n][s].mock; return v === undefined || v === '' || v === null ? null : +v; };
+// Mock mark = the student's CAT1 score as a percentage of the CAT1 maximum (e.g. 8.5 out of 10 -> 85.0).
+// Mock marks come only from CAT1; they cannot be typed in by hand.
+export const mockFromCat = (S, n, s) => {
+  const c = S.comps.find((x) => x.k === 'cat') || S.comps.find((x) => /CAT/i.test(x.n));
+  const sc = S.scores[n] && S.scores[n][s];
+  const v = c && sc ? sc[c.k] : undefined;
+  if (!c || !(+c.m > 0) || v === undefined || v === '' || v === null) return null;
+  return Math.round((+v / +c.m) * 1000) / 10;
+};
+export const mockOf = (S, n, s) => mockFromCat(S, n, s);
 export const mockGrade = (S, v) => (v === null ? '' : gradeOf(v, isSenior(S)));
 const r1 = (x) => Math.round(x * 10) / 10;
 export const f1 = (x) => r1(+x || 0).toFixed(1); // scores are shown to 1 decimal place everywhere
