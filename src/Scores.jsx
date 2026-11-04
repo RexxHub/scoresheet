@@ -55,7 +55,7 @@ export default function Scores({ S, up }) {
             <button type="button" aria-pressed={mode === 'mock'} onClick={() => setMode('mock')}>Mock exam</button>
           </div>
         )}
-        <p className="hint">{mode === 'ca' ? "Type each student's marks. Total, percentage and grade update as you type. Press Enter to move down a column." : "Type each student's mock exam score out of 100. The grade shows as you type. Press Enter to move down."}</p>
+        <p className="hint">{mode === 'ca' ? "Type each student's marks. Total, percentage and grade update as you type. Press Enter to move down a column." : "Mock scores (out of 100) are worked out automatically from each student's CAT1 score. Enter the CAT1 marks under CA scores and they appear here."}</p>
       </section>
       {mode === 'ca' && (<>
       <div className="stats">
@@ -133,7 +133,7 @@ function MockTable({ S, sub, setScore, onKey, bad }) {
                     <td>
                       <input type="number" inputMode="decimal" step="any" min="0" max="100" data-j={0}
                         aria-label={`${s.n} mock score`} className={bad === s.n + 'mock' ? 'bad' : ''}
-                        value={v ?? ''} onChange={(e) => setScore(s.n, 'mock', e.target.value, 100)} onKeyDown={onKey} />
+                        value={v ?? ''} readOnly title="Worked out from the CAT1 score" onChange={(e) => setScore(s.n, 'mock', e.target.value, 100)} onKeyDown={onKey} />
                     </td>
                     <td>{g && <span className={`chip ${gradeClass(g)}`}>{g}</span>}</td>
                   </tr>
